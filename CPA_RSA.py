@@ -61,7 +61,9 @@ def bitfield(n):
     :param n:
     :return:
     """
-    return [int(digit) for digit in bin(n)[2:]].reverse()
+    bit_array = [int(digit) for digit in bin(n)[2:]]
+    bit_array.reverse()
+    return bit_array
 
 
 def hamming_weight(n):
