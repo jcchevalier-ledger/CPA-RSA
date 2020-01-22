@@ -41,18 +41,21 @@ def M_d_modN(M, d, N):
     :param M: Message (int)
     :param d: Key a list of 0 or 1 representing the binary
     :param N: Primary used for the algorithm
-    :return: List of Hamming weights. Can of len 1 or 2 depending on the last value of the key
+    :return: List of Hamming weights.
     """
     result = [0]
     T = M
     for i in range(len(d) - 2, -1, -1):
         T = (T ** 2) % N
-        result[0] = hamming_weight(T)
         if d[i] == 1:
             T = (T * M) % N
             if i == 0:
-                result.append(hamming_weight(T))
-        return result
+                result[0] = hamming_weight(T)
+        else:
+            if i == 0:
+                T = (T ** 2) % N
+                result[0] = hamming_weight(T)
+    return result
 
 
 def bitfield(n):
@@ -75,6 +78,39 @@ def hamming_weight(n):
     return sum(bitfield(n))
 
 
+def hack(N, curves, messages):
+    """
+
+    :param N:
+    :param curves:
+    :param messages:
+    :return:
+    """
+    d = [1]  # initialize d
+    count = 1
+    while count < 28:  # TODO : Check comparison value
+        array_hamming_weight_zero = np.zeros((1000, 1))
+        array_hamming_weight_one = np.zeros((1000, 1))
+        for index, message in enumerate(messages):
+            temp_d = [0] + d
+            hamming_weights = M_d_modN(message, temp_d, N)
+            array_hamming_weight_zero[index] = hamming_weights
+            temp_d = [1] + d
+            hamming_weights = M_d_modN(message, temp_d, N)
+            array_hamming_weight_one[index] = hamming_weights
+        cor0 = np.corrcoef(array_hamming_weight_zero, curves[:, count:count + 1], False)
+        cor1 = np.corrcoef(array_hamming_weight_one, curves[:, count:count + 1], False)
+        cor0_val = cor0[0][1]
+        cor1_val = cor1[0][1]
+        if abs(cor1_val) > abs(cor0_val):
+            d = [1] + d
+            count += 2
+        else:
+            d = [0] + d
+            count += 1
+        print(d)
+
+
 if __name__ == "__main__":
     # Variable global pour N
     N = get_n()
@@ -83,3 +119,4 @@ if __name__ == "__main__":
     for i in range(1000):
         array_curves[i] = read_curve(i)
         array_messages.append(read_message(i))
+    hack(N, array_curves, array_messages)
