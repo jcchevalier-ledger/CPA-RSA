@@ -1,12 +1,15 @@
-def read_curve(i):
-    f = open("data/curve_" + str(i) + ".txt", "r")
+import numpy as np
+
+
+def read_curve(curve_index):
+    f = open("data/curve_" + str(curve_index) + ".txt", "r")
     data = str.split(f.read())
-    data = [float(i) for i in data]
+    data = [float(data[j]) for j in range(28)]
     return data
 
 
-def read_message(i):
-    f = open("data/msg_" + str(i) + ".txt", "r")
+def read_message(message_index):
+    f = open("data/msg_" + str(message_index) + ".txt", "r")
     data = int(f.read())
     return data
 
@@ -18,4 +21,9 @@ def get_n():
 
 
 if __name__ == "__main__":
-    read_curve(0)
+    prime = get_n()
+    array_curves = np.zeros((1000, 28))
+    array_messages = []
+    for i in range(1000):
+        array_curves[i] = read_curve(i)
+        array_messages.append(read_message(i))
