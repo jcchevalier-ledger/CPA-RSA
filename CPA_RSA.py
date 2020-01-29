@@ -9,8 +9,12 @@ def read_curve(curve_index):
     """
     f = open("data/curve_" + str(curve_index) + ".txt", "r")
     data = str.split(f.read())
-    data = [float(data[j]) for j in range(28)]
-    return data
+    index = 0
+    data_list = []
+    while float(data[index]) != -1000:
+        data_list.append(float(data[index]))
+        index += 1
+    return data_list
 
 
 def read_message(message_index):
@@ -88,7 +92,7 @@ def hack(N, curves, messages):
     """
     d = [1]  # initialize d
     count = 1
-    while count < 28:  # TODO : Check comparison value
+    while count < curves.shape[1]:
         array_hamming_weight_zero = np.zeros((1000, 1))
         array_hamming_weight_one = np.zeros((1000, 1))
         for index, message in enumerate(messages):
@@ -116,9 +120,11 @@ def hack(N, curves, messages):
 if __name__ == "__main__":
     # Variable global pour N
     N = get_n()
-    array_curves = np.zeros((1000, 28))
-    array_messages = []
-    for i in range(1000):
+    first_curve = read_curve(0)
+    array_curves = np.zeros((1000, first_curve.__len__()))
+    array_curves[0] = first_curve
+    array_messages = [read_message(0)]
+    for i in range(1, 1000):
         array_curves[i] = read_curve(i)
         array_messages.append(read_message(i))
     hack(N, array_curves, array_messages)
