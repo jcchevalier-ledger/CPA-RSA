@@ -119,8 +119,10 @@ def hack(N, curves, messages):
 
 
 def cut(string, k=4):
+    string.reverse()
     for i in range(len(string) // k):
         string = string[:4 * (i + 1)+i] + [' '] + string[4 * (i + 1)+i:]
+    string.reverse()
     return string
 
 
