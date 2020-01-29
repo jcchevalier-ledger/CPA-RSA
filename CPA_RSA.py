@@ -115,6 +115,13 @@ def hack(N, curves, messages):
     d.reverse()
     print("La clé est:")
     print(''.join(map(str, d)))
+    print(cut(d))
+
+
+def cut(string, k=4):
+    for i in range(len(string) // k):
+        string = string[:4 * (i + 1)+i] + [' '] + string[4 * (i + 1)+i:]
+    return string
 
 
 if __name__ == "__main__":
