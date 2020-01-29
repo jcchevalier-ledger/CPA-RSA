@@ -113,11 +113,10 @@ def hack(N, curves, messages):
             d = [0] + d
             count += 1
     d.reverse()
-    key_str = ''.join(map(str, d))
+
+    key_str = ''.join(map(str, cut(d)))
     print("La clé est:")
     print(key_str)
-    print(''.join(map(str, d)))
-    print(cut(d))
 
 
 def cut(string, k=4):
