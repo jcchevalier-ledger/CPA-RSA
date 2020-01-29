@@ -113,8 +113,9 @@ def hack(N, curves, messages):
             d = [0] + d
             count += 1
     d.reverse()
+    key_str = ''.join(map(str, d))
     print("La clé est:")
-    print(''.join(map(str, d)))
+    print(key_str)
 
 
 if __name__ == "__main__":
